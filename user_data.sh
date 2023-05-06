@@ -1,5 +1,6 @@
 #!/bin/bash -x
 yum -y update --security
+yum -y install cronie
 
 ##########################
 ## ENABLE SSH RECORDING ##
