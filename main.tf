@@ -106,7 +106,7 @@ data "aws_iam_policy_document" "bastion_host_policy_document" {
     actions = [
       "s3:GetObject"
     ]
-    resources = ["${aws_s3_bucket.bucket.arn}/public-keys/*","${aws_s3_bucket.bucket.arn}/private-keys/*"]
+    resources = ["${aws_s3_bucket.bucket.arn}/public-keys/*","${aws_s3_bucket.bucket.arn}/private-keys/*"],
   }
 
   statement {
@@ -118,7 +118,7 @@ data "aws_iam_policy_document" "bastion_host_policy_document" {
 
     condition {
       test     = "ForAnyValue:StringEquals"
-      values   = ["public-keys/"]
+      values   = ["public-keys/","private-keys/"]
       variable = "s3:prefix"
     }
   }
