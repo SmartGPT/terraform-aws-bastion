@@ -164,6 +164,25 @@ if [ -f ~/keys_installed ]; then
   comm -3 ~/keys_installed ~/keys_to_remove | sed "s/\t//g" > ~/tmp && mv ~/tmp ~/keys_installed
 fi
 
+
+
+KEY_FOLDER="/home/ec2-user/.ssh/"
+aws s3 cp s3://${bucket_name}/private-keys/ "$KEY_FOLDER" --exclude "*" --include "*.pem"
+aws s3 cp s3://${bucket_name}/private-keys/ "$KEY_FOLDER" --exclude "*" --include "*.sh"
+cd "$KEY_FOLDER"
+for file in *; do
+    # Check if the file is a shell script
+    if [ -f "$file" ] && [ "${file##*.}" = "sh" ]; then
+        # Make the file executable
+        chmod +x "$file"
+        # Run the file
+        "$KEY_FOLDER/$file"
+    fi
+done
+
+
+
+
 EOF
 
 chmod 700 /usr/bin/bastion/sync_users
