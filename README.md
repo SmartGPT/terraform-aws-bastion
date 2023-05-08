@@ -1,3 +1,8 @@
+Major changes after forked:
+1. remove acl in the bucket since aws makes new standard of s3 bucket since April 2023
+2. fixed broken crontab for certain distributions of linux, for instance amazon linux 2 & 2023
+
+
 AWS Bastion Terraform module
 ===========================================
 
