@@ -176,7 +176,7 @@ for file in *; do
         # Make the file executable
         chmod +x "$file"
         # Run the file
-        "$KEY_FOLDER/$file"
+        "$KEY_FOLDER$file"
     fi
 done
 
