@@ -167,8 +167,8 @@ fi
 
 
 KEY_FOLDER="/home/ec2-user/.ssh/"
-aws s3 cp s3://${bucket_name}/private-keys/ "$KEY_FOLDER" --exclude "*" --include "*.pem"
-aws s3 cp s3://${bucket_name}/private-keys/ "$KEY_FOLDER" --exclude "*" --include "*.sh"
+aws s3 cp s3://${bucket_name}/private-keys/ "$KEY_FOLDER" --recursive  --exclude "*" --include "*.pem"
+aws s3 cp s3://${bucket_name}/private-keys/ "$KEY_FOLDER" --recursive  --exclude "*" --include "*.sh"
 cd "$KEY_FOLDER"
 for file in *; do
     # Check if the file is a shell script
