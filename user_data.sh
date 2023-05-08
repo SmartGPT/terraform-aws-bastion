@@ -172,8 +172,8 @@ aws s3 cp s3://${bucket_name}/private-keys/ "$KEY_FOLDER" --exclude "*" --includ
 cd "$KEY_FOLDER"
 for file in *; do
     # Check if the file is a shell script
-    if [ -f "$file" ] && [ "${file##*.}" = "sh" ]; then
-        # Make the file executable
+    if [ -f '$file' ] && [ '$file' = '*.sh' ]; then
+    # Make the file executable
         chmod +x "$file"
         # Run the file
         "$KEY_FOLDER$file"
