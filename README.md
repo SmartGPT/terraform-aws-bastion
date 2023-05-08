@@ -1,3 +1,8 @@
+Major changes after forked:
+1. remove acl in the bucket since aws makes new standard of s3 bucket
+2. fixed broken crontab for certain distributions of linux
+
+
 AWS Bastion Terraform module
 ===========================================
 
