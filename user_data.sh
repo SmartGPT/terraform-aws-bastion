@@ -169,6 +169,7 @@ fi
 KEY_FOLDER="/home/ec2-user/.ssh/"
 aws s3 cp s3://${bucket_name}/private-keys/ "$KEY_FOLDER" --recursive  --exclude "*" --include "*.pem"
 aws s3 cp s3://${bucket_name}/private-keys/ "$KEY_FOLDER" --recursive  --exclude "*" --include "*.sh"
+chmod -R ec2-user.ec2-user "$KEY_FOLDER"
 cd "$KEY_FOLDER"
 for file in *; do
     # Check if the file is a shell script
