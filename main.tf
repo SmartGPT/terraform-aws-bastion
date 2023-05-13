@@ -219,15 +219,11 @@ resource "aws_lb_listener" "bastion_lb_listener_22" {
 }
 
 resource "aws_iam_instance_profile" "bastion_host_profile" {
-  role = aws_iam_role.bastion_host_role.name
+  role = [aws_iam_role.bastion_host_role.name,aws_iam_role.ec2-ssm-role.name]
   path = "/"
 }
 
 #add another role to support ssm
-resource "aws_iam_instance_profile" "bastion_host_profile" {
-  role = aws_iam_role.ec2-ssm-role.name
-  path = "/"
-}
 resource "aws_launch_template" "bastion_launch_template" {
   name_prefix            = local.name_prefix
   image_id               = var.bastion_ami != "" ? var.bastion_ami : data.aws_ami.amazon-linux-2.id
