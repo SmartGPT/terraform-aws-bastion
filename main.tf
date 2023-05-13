@@ -92,6 +92,31 @@ resource "aws_iam_role" "bastion_host_role" {
   permissions_boundary = var.bastion_iam_permissions_boundary
 }
 
+resource "aws_iam_role" "ec2-ssm-role" {
+  name = var.ec2-ssm-role
+  #  permissions_boundary = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/ScopePermissions"
+  assume_role_policy = <<EOF
+{
+ "Version": "2012-10-17",
+ "Statement": [
+   {
+     "Action": "sts:AssumeRole",
+     "Principal": {
+       "Service": "ec2.amazonaws.com"
+     },
+     "Effect": "Allow",
+     "Sid": ""
+   }
+ ]
+}
+EOF
+}
+resource "aws_iam_role_policy_attachment" "ssm" {
+  role = aws_iam_role.ec2-ssm-role.name
+  #policy_arn = aws_iam_policy.ec2-ssm-role-policy.arn
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
+
 data "aws_iam_policy_document" "bastion_host_policy_document" {
 
   statement {
@@ -198,6 +223,11 @@ resource "aws_iam_instance_profile" "bastion_host_profile" {
   path = "/"
 }
 
+#add another role to support ssm
+resource "aws_iam_instance_profile" "bastion_host_profile" {
+  role = aws_iam_role.ec2-ssm-role.name
+  path = "/"
+}
 resource "aws_launch_template" "bastion_launch_template" {
   name_prefix            = local.name_prefix
   image_id               = var.bastion_ami != "" ? var.bastion_ami : data.aws_ami.amazon-linux-2.id
