@@ -143,7 +143,9 @@ variable "bastion_iam_role_name" {
   type        = string
   default     = null
 }
-
+variable "ec2-ssm-role" {
+  default = "ec2-ssm-role"
+}
 variable "bastion_iam_policy_name" {
   description = "IAM policy name to create for granting the instance role access to the bucket"
   default     = "BastionHost"
