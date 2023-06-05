@@ -3,6 +3,7 @@ Major changes after forked:
 2. fixed broken crontab for certain distributions of linux, for instance amazon linux 2 & 2023
 3. add a feature to copy pem private keys & place them in the bastion
 4. add ec2-ssm-role to the default profile.
+5. upgraded to aws 5.0
 
 
 AWS Bastion Terraform module
