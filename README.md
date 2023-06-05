@@ -4,6 +4,7 @@ Major changes after forked:
 3. add a feature to copy pem private keys & place them in the bastion
 4. add ec2-ssm-role to the default profile.
 5. upgraded to aws 5.0
+6. remove bucket_public_keys_readme
 
 
 AWS Bastion Terraform module
