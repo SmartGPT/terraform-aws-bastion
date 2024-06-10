@@ -52,3 +52,11 @@ output "target_group_arn" {
   description = "The ARN of the target group for the ELB"
   value       = var.create_elb ? try(aws_lb_target_group.bastion_lb_target_group[0].arn, null) : null
 }
+output "private_ip" {
+  description = "The private ip of bastion host when no elb enabled"
+  value       = var.create_elb ? null: try(data.aws_instances.bastion.private_ips[0], null)
+}
+output "public_ip" {
+  description = "The public ip of bastion host when no elb enabled"
+  value       = var.create_elb ? null: try(data.aws_instances.bastion.public_ips[0], null)
+}

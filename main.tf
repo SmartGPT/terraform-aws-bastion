@@ -348,3 +348,12 @@ resource "aws_autoscaling_group" "bastion_auto_scaling_group" {
 
   depends_on = [aws_s3_bucket.bucket]
 }
+
+
+data "aws_instances" "bastion" {
+  count = var.create_elb ? 0: 1
+  filter {
+    name   = "tag:aws:autoscaling:groupName"
+    values = [aws_autoscaling_group.bastion_auto_scaling_group.name]
+  }
+}
