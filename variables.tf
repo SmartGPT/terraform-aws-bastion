@@ -71,7 +71,13 @@ variable "bastion_security_group_id" {
   description = "Custom security group to use"
   default     = ""
 }
-
+# these 2 variables have to use together to avoid "terraform plan" failure
+# the above "bastion_security_group_id" is not null, then the following "bastion_secuirty_group_used" must be true.
+variable "bastion_security_group_used" {
+  type        = bool
+  description = "Custom security group to use"
+  default     = true
+}
 variable "bucket_force_destroy" {
   type        = bool
   default     = false

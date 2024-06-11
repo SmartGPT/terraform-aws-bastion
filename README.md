@@ -5,7 +5,10 @@ Major changes after forked:
 4. add ec2-ssm-role to the default profile.
 5. upgraded to aws 5.0
 6. remove bucket_public_keys_readme
-
+7. add support for one single instance (without the ELB)
+8. add public IP and private ip for one single instance
+9. fix a bug in the context of "var.bastion_security_group_id == "" ? 1 : 0"
+10. add additional input "bastion_security_group_used" boolean variable
 
 AWS Bastion Terraform module
 ===========================================
@@ -171,6 +174,7 @@ No modules.
 | <a name="input_tags"></a> [tags](#input\_tags) | A mapping of tags to assign | `map(string)` | `{}` | no |
 | <a name="input_use_imds_v2"></a> [use\_imds\_v2](#input\_use\_imds\_v2) | Use (IMDSv2) Instance Metadata Service V2 | `bool` | `false` | no |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | VPC ID where we'll deploy the bastion | `string` | n/a | yes |
+| <a name="bastion_security_group_used"></a> [bastion\_security\_group\_used](#input\_bastion\_security\_group\_used) | Use the external or existing security group or not | `bool` | `true` | yes |
 
 ## Outputs
 
@@ -187,6 +191,8 @@ No modules.
 | <a name="output_elb_ip"></a> [elb\_ip](#output\_elb\_ip) | The DNS name of the ELB for bastion hosts |
 | <a name="output_private_instances_security_group"></a> [private\_instances\_security\_group](#output\_private\_instances\_security\_group) | The ID of the security group for private instances |
 | <a name="output_target_group_arn"></a> [target\_group\_arn](#output\_target\_group\_arn) | The ARN of the target group for the ELB |
+| <a name="public_ip"></a> [public\_ip](#output\_public\_ip) | The public ip of ELB or one single instance |
+| <a name="private_ip"></a> [private\_ip](#output\_private\_ip) | The private ip of ELB or one single instance |
 <!-- END_TF_DOCS -->
 
 Known issues

@@ -19,8 +19,11 @@ data "aws_kms_alias" "kms-ebs" {
 #   kms_key_id = aws_kms_key.key.arn
 # }
 
+
+# if external or the parent module does have the security group id then we will leverage that one instead of creating a new one.
+  # if no existing sg defined externally, then we will create a new one and add rules
 resource "aws_security_group" "bastion_host_security_group" {
-  count       = var.bastion_security_group_id == "" ? 1 : 0
+  count       = var.bastion_security_group_used ? 1 : 0
   description = "Enable SSH access to the bastion host from external via SSH port"
   name        = "${local.name_prefix}-host"
   vpc_id      = var.vpc_id
@@ -29,7 +32,7 @@ resource "aws_security_group" "bastion_host_security_group" {
 }
 
 resource "aws_security_group_rule" "ingress_bastion" {
-  count            = var.bastion_security_group_id == "" && var.create_elb ? 1 : 0
+  count            = var.bastion_security_group_used && var.create_elb ? 1 : 0
   description      = "Incoming traffic to bastion"
   type             = "ingress"
   from_port        = var.public_ssh_port
@@ -42,7 +45,7 @@ resource "aws_security_group_rule" "ingress_bastion" {
 }
 
 resource "aws_security_group_rule" "egress_bastion" {
-  count       = var.bastion_security_group_id == "" ? 1 : 0
+  count       = var.bastion_security_group_used ? 1 : 0
   description = "Outgoing traffic from bastion to instances"
   type        = "egress"
   from_port   = "0"
@@ -171,6 +174,7 @@ resource "aws_iam_role_policy_attachment" "bastion_host" {
 
 resource "aws_route53_record" "bastion_record_name" {
   name    = var.bastion_record_name
+  allow_overwrite = true  
   zone_id = var.hosted_zone_id
   type    = "A"
   count   = var.create_dns_record && var.create_elb ? 1 : 0
