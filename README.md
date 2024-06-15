@@ -9,6 +9,7 @@ Major changes after forked:
 8. add public IP and private ip for one single instance
 9. fix a bug in the context of "var.bastion_security_group_id == "" ? 1 : 0"
 10. add additional input "bastion_security_group_used" boolean variable
+11. fix security group multiple list issue.
 
 AWS Bastion Terraform module
 ===========================================
