@@ -42,7 +42,7 @@ resource "aws_security_group_rule" "ingress_bastion" {
   ipv6_cidr_blocks = local.ipv6_cidr_block
 
   #security_group_id = local.security_group
-  security_group_id = aws_security_group.bastion_host_security_group
+  security_group_id = aws_security_group.bastion_host_security_group.id
 }
 
 resource "aws_security_group_rule" "egress_bastion" {
@@ -254,7 +254,8 @@ resource "aws_launch_template" "bastion_launch_template" {
   }
   network_interfaces {
     associate_public_ip_address = var.associate_public_ip_address
-    security_groups             = concat([local.security_group], var.bastion_additional_security_groups)
+    #security_groups             = flattern([[local.security_group], var.bastion_additional_security_groups])
+    security_groups             = flatten([local.security_group, var.bastion_additional_security_groups])
     delete_on_termination       = true
   }
   iam_instance_profile {
