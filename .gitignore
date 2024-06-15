@@ -8,3 +8,5 @@
 
 # Jetbrains
 .idea/
+
+.terraform.tfstate.lock*
