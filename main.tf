@@ -23,7 +23,7 @@ data "aws_kms_alias" "kms-ebs" {
 # if external or the parent module does have the security group id then we will leverage that one instead of creating a new one.
   # if no existing sg defined externally, then we will create a new one and add rules
 resource "aws_security_group" "bastion_host_security_group" {
-  count       = var.bastion_security_group_used ? 1 : 0
+  #count       = var.bastion_security_group_used ? 1 : 0
   description = "Enable SSH access to the bastion host from external via SSH port"
   name        = "${local.name_prefix}-host"
   vpc_id      = var.vpc_id
@@ -32,7 +32,7 @@ resource "aws_security_group" "bastion_host_security_group" {
 }
 
 resource "aws_security_group_rule" "ingress_bastion" {
-  count            = var.bastion_security_group_used && var.create_elb ? 1 : 0
+  #count            = var.bastion_security_group_used && var.create_elb ? 1 : 0
   description      = "Incoming traffic to bastion"
   type             = "ingress"
   from_port        = var.public_ssh_port
@@ -41,11 +41,12 @@ resource "aws_security_group_rule" "ingress_bastion" {
   cidr_blocks      = local.ipv4_cidr_block
   ipv6_cidr_blocks = local.ipv6_cidr_block
 
-  security_group_id = local.security_group
+  #security_group_id = local.security_group
+  security_group_id = aws_security_group.bastion_host_security_group
 }
 
 resource "aws_security_group_rule" "egress_bastion" {
-  count       = var.bastion_security_group_used ? 1 : 0
+  #count       = var.bastion_security_group_used ? 1 : 0
   description = "Outgoing traffic from bastion to instances"
   type        = "egress"
   from_port   = "0"
@@ -53,7 +54,8 @@ resource "aws_security_group_rule" "egress_bastion" {
   protocol    = "-1"
   cidr_blocks = ["0.0.0.0/0"]
 
-  security_group_id = local.security_group
+  #security_group_id = local.security_group
+  security_group_id = aws_security_group.bastion_host_security_group.id 
 }
 
 resource "aws_security_group" "private_instances_security_group" {
@@ -71,7 +73,8 @@ resource "aws_security_group_rule" "ingress_instances" {
   to_port     = var.private_ssh_port
   protocol    = "TCP"
 
-  source_security_group_id = local.security_group
+  #source_security_group_id = local.security_group
+  source_security_group_id = aws_security_group.bastion_host_security_group.id
 
   security_group_id = aws_security_group.private_instances_security_group.id
 }
@@ -355,7 +358,7 @@ resource "aws_autoscaling_group" "bastion_auto_scaling_group" {
 
 
 data "aws_instances" "bastion" {
-  count = var.create_elb ? 0: 1
+  #count = var.create_elb ? 0: 1
   filter {
     name   = "tag:aws:autoscaling:groupName"
     values = [aws_autoscaling_group.bastion_auto_scaling_group.name]
