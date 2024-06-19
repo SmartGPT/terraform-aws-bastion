@@ -308,7 +308,7 @@ resource "aws_launch_template" "bastion_launch_template" {
     }    
   }
 
-  instance_type = "t3.micro"
+  #instance_type = "t3.micro"
 
   placement {
     availability_zone = "us-west-2a"
