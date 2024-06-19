@@ -301,6 +301,18 @@ resource "aws_launch_template" "bastion_launch_template" {
     instance_metadata_tags      = var.enable_instance_metadata_tags ? "enabled" : "disabled"
   }
 
+  instance_market_options {
+    market_type = "spot"
+    spot_options {
+      max_price = 0.005
+    }    
+  }
+
+  instance_type = "t3.micro"
+
+  placement {
+    availability_zone = "us-west-2a"
+  }
   lifecycle {
     create_before_destroy = true
   }
